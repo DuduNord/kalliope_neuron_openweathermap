@@ -30,15 +30,20 @@ class Openweathermap(NeuronModule):
         # connect with the api. this will work every time
         owm = pyowm.OWM(API_key=self.api_key, language=self.lang)
 
+        returned_message = dict()
+
         # search for current weather the provided place
         try:
             observation = owm.weather_at_place(extended_location)
         except UnauthorizedError as e:
             raise MissingParameterException("OpenWeatherMap crashed and reported %s" % e)
         except NotFoundError:
-            raise MissingParameterException("OpenWeatherMap did not find the location %s" % self.location)
-
-        returned_message = dict()
+            # raise MissingParameterException("OpenWeatherMap did not find the location %s" % self.location)
+            returned_message["location"] = self.location
+            returned_message["latitude"] = "0"
+            returned_message["longitude"] = "0"
+            self.say(returned_message)
+            exit()
 
         # load location, longitude and latitude
         returned_message["location"] = observation.get_location().get_name()
