@@ -2,7 +2,7 @@
 
 ## Synopsis 
 
-Give the today, tomorrow weather or a forecast for 5 days at a specific day of the week with the related data (humidity, temperature, etc ...) for a given location. 
+Give the today, tomorrow weather or a forecast for 5 days at a specific day of the week with the related data (humidity, temperature, etc ...) for a given location. If the location is not found, the location is equal to the wrong city name but the latitude and longitude are equal to 0.
 
 ## Installation
 ```
@@ -27,8 +27,8 @@ kalliope install --git-url https://github.com/kalliope-project/kalliope_neuron_o
 | Name      | Description                               | Type   | Sample                                                                    |
 | --------- | ----------------------------------------- | ------ | ------------------------------------------------------------------------- |
 | location  | The current location                      | String | Grenoble                                                                  |
-| longitude | The current longitude                     | Float  | 5.73                                                                      |
-| latitude  | The current latitude                      | Float  | 45.18                                                                     |
+| longitude | The current longitude. 0 if not found     | Float  | 5.73                                                                      |
+| latitude  | The current latitude. 0 if not found      | Float  | 45.18                                                                     |
 | current   | Dict of weather data for the current time | Dict   | {'clouds_coverage': 24, 'humidity': 68, 'pressure': 855.16 ... }          |
 | tomorrow  | Dict of weather data for tomorrow         | Dict   | {'<time_value>': { <weatherdata> }, {'<time_value>': { <weather_data> }}  |
 | today     | Dict of weather data for today            | Dict   | {'<time_value>': { <weather_data> }, {'<time_value>': { <weather_data> }} |
@@ -165,7 +165,10 @@ You need to set the day parameter to parse your day to the template.
     }[day] | default("")
 -%}
 
-{% if "today" == day_of_week  %} 
+{% if latitude == "0" and longitude == "0" %}  
+    La ville {{ location }} n'a pas été trouvé
+
+{% elif "today" == day_of_week  %} 
     The weather today in the morning will be {{ today['07:00']['weather_status'] }} with temperatures from about {{ today['07:00']['temperature'] }} to {{ today['16:00']['temperature'] }} degree at afternoon
 
 {% elif "tomorrow" == day_of_week  %} 
