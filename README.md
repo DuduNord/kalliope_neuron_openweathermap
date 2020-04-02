@@ -6,7 +6,7 @@ Give the today, tomorrow weather or a forecast for 5 days at a specific day of t
 
 ## Installation
 ```
-kalliope install --git-url https://github.com/kalliope-project/kalliope_neuron_openweathermap.git
+kalliope install --git-url https://github.com/DuduNord/kalliope_neuron_openweathermap.git
 ```
 
 ## Options
